@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import axios from 'axios';
 import classNames from 'classnames';
+import ChatRooms from '../components/ChatRooms';
 
 const Index = ({rooms}) => (
     <Layout>
@@ -13,21 +14,10 @@ const Index = ({rooms}) => (
                     <button type="button" onclick="" className={classNames('btn', 'btn-primary', 'mb-2')}>방생성</button>
                 </form>
                 <h3>채팅룸 목록</h3>
-                <ul className="list-group">
-                    {rooms.map((room) => (
-                        <li className="list-group-item" key={room.roomId}>{room.name}</li>
-                    ))}
-                </ul>
+                <ChatRooms />
             </main>
         </div>
     </Layout>
 );
-
-Index.getInitialProps = async () => {
-    const {data: rooms } = await axios.get('http://localhost:8081/chat/rooms');
-    console.log(rooms);
-
-    return { rooms };
-}
 
 export default Index;

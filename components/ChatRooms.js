@@ -1,25 +1,40 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 
+const ChatRooms = () => {
+    return class extends Component {
+        state = {
+            data: null
+        }
 
-const ChatRooms = ({rooms}) => (
-    <ul className="list-group">
-        {this.props.data.map((room) => (
-            <li className="list-group-item" key={room.roomId}>
-            <Link href="/d">
-                <a>{room.name}</a>
-            </Link>
-            </li>
-        ))}
-    </ul>
-);
+        async initialize() {
+            try {
+              const response = await axios.get('http://localhost:8081/chat/rooms');
+              this.setState({
+                data: response.data
+              });
+            } catch (e) {
+              console.log(e);
+            }
+          }
 
-ChatRooms.getInitialProps = async () => {
-    const {data: rooms } = await axios.get('http://localhost:8081/chat/rooms');
-    console.log(rooms);
+        componentDidMount(){
+            this.initialize();
+        }
 
-    return { rooms };
+        render(){
+            const { rooms } = this.state;
+            <ul className="list-group">
+                {rooms.map((room) => (
+                    <li className="list-group-item" key={room.roomId}>
+                    <Link href="/d">
+                        <a>{room.name}</a>
+                    </Link>
+                    </li>
+                ))}
+            </ul>
+        }
+    }
 }
-
 
 export default ChatRooms;
